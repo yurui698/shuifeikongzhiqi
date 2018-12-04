@@ -28,32 +28,34 @@
 #define WGCOLLECTOR_DATA_EVT   0x00200000
 #define TX5_CMD_EVT            0x00400000
 #define IO_XUNHUAN_CMD_EVT     0x00800000
+#define SF_Para_Trans_EVT     0x01000000
+
+#define SF_Flow_Measu_EVT      0x04000000
+#define SF_Flow_Trans_EVT      0x08000000
 typedef struct timer_recall
 {
-    u32 eventflag;   // 设定时间标志
-    u16 timeout;     // 设定触发时间
-    u16 reload_timeout;
-    struct timer_recall *next;
+	u32 eventflag;   // 设定时间标志
+	u16 timeout;     // 设定触发时间
+	u16 reload_timeout;
+	struct timer_recall *next;
 } TimerRec;
-
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-void SysClock(void);
-void GetSysTime(u32 *Day,u32 *mSec);
-void TimerInit(void);
-u8   Start_timerEx(u32 eventflag,u16 timeout);
-u8   Start_reload_timer(u32 eventflag,u16 reload_timeout);
-u8   Stop_timerEx(u32 eventflag);
-u16  Get_timeoutEx(u32 eventflag);
-u8   Timer_Num_Active(void);
-void Set_Event(u32 eventflag);
-void Clear_Event(u32 eventflag);
-void Delayus(u32 us);//采集
-
+	void SysClock(void);
+	void GetSysTime(u32 *Day, u32 *mSec);
+	void TimerInit(void);
+	u8   Start_timerEx(u32 eventflag, u16 timeout);
+	u8   Start_reload_timer(u32 eventflag, u16 reload_timeout);
+	u8   Stop_timerEx(u32 eventflag);
+	u16  Get_timeoutEx(u32 eventflag);
+	u8   Timer_Num_Active(void);
+	void Set_Event(u32 eventflag);
+	void Clear_Event(u32 eventflag);
+	void Delayus(u32 us);//采集
 
 #ifdef __cplusplus
 }

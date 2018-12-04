@@ -115,7 +115,8 @@ extern u16 TIM2_FrequencyPA0[];//二氧化碳
 extern u16 TIM2_FrequencyPC0[];//光照
 extern u16 TIM2_FrequencyPA1[];//空气温湿度
 extern u8 factory_gateway_set[];//网关参数设定
-
+extern u8 lvbotime;
+extern u8 Callbacktim;
 extern u32 TIM5_pulsePA1[];//空气温湿度
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -512,14 +513,21 @@ void TIM2_IRQHandler(void)
     if(TIM_GetITStatus(TIM2,TIM_IT_Update) != RESET)
     {
         freq_I++;
-        if(freq_I>60) {
+			Callbacktim++;
+		if(Callbacktim>2)
+        {
+            Callbacktim=0;
+        }
+        if(freq_I>lvbotime)
+        {
             freq_I=0;
         }
         TIM2_FrequencyPC0[freq_I]=0;
         TIM2_FrequencyPA0[freq_I]=0;
         TIM2_FrequencyPA1[freq_I]=0;
 
-        if(rain_time_second>=180) {
+        if(rain_time_second>=180)
+        {
             rain_time_second=0;
         }
         report_last_rain[rain_time_second]=rain_last_times;
@@ -576,7 +584,8 @@ void TIM5_IRQHandler(void)
 //            TIM_ITConfig(TIM5,TIM_IT_CC2,DISABLE);
 //	          TIM_ITConfig(TIM5,TIM_IT_Update,DISABLE );
 //						TIM_Cmd(TIM5,DISABLE);
-                if(pulse_I>=TIM5_pulsePA1_NUM) {
+                if(pulse_I>=TIM5_pulsePA1_NUM)
+                {
                     pulse_I=0;
                 }
                 if((Capture_time<0x9696)&&(Capture_time>=128))//驱动电路200us延时除去，0x9696us=6553.5mm
@@ -597,10 +606,12 @@ void TIM5_IRQHandler(void)
             TIM_ClearITPendingBit(TIM5,TIM_IT_Update);
             TIM5_pulse_num++;
 //			if((TIM5_pulse_num)>5){while(1);}
-            if((test1_up)>5) {
+            if((test1_up)>5)
+            {
                 while(1);   //只收到上升沿中断，没有收到下降沿中断
             }
-            if((test2_down)>5) {
+            if((test2_down)>5)
+            {
                 while(1);   //只收到下升沿中断，没有收到上降沿中断
             }
         }

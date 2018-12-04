@@ -176,9 +176,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>1856</LineNumber>
+          <LineNumber>785</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134276028</Address>
+          <Address>134234998</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -187,7 +187,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>F:\01_姘磋偉\20171112鎺у埗鍣ㄦ帴鏀舵竻闆?- 姘磋偉\20181107鏋佺爜骞冲彴鏈夌嚎SDK姘磋偉\User\HandleTask.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\\../User/HandleTask.c\1856</Expression>
+          <Expression>\\Induction_Heater\../User/HandleTask.c\785</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -279,7 +279,17 @@
         <Ww>
           <count>17</count>
           <WinNumber>1</WinNumber>
-          <ItemText>RecDataBuffer4</ItemText>
+          <ItemText>SF_Qeury_index</ItemText>
+        </Ww>
+        <Ww>
+          <count>18</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Query_Index_Collector</ItemText>
+        </Ww>
+        <Ww>
+          <count>19</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>online_slaveID</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -296,52 +306,57 @@
         <Ww>
           <count>2</count>
           <WinNumber>2</WinNumber>
-          <ItemText>USART3SendTCB</ItemText>
+          <ItemText>ReceiveData4</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>2</WinNumber>
-          <ItemText>ReceiveData4</ItemText>
+          <ItemText>ReceiveData3</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>2</WinNumber>
-          <ItemText>ReceiveData3</ItemText>
+          <ItemText>param_fertigation52</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>2</WinNumber>
-          <ItemText>RecDataBuffer3</ItemText>
+          <ItemText>fertigation52databuf</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>2</WinNumber>
-          <ItemText>param_fertigation52</ItemText>
+          <ItemText>fertigation52.param_int</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>2</WinNumber>
-          <ItemText>fertigation52databuf</ItemText>
+          <ItemText>real_send</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>2</WinNumber>
-          <ItemText>fertigation52.param_int</ItemText>
+          <ItemText>\\Induction_Heater\../User/HandleTask.c\module_send_flg</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>2</WinNumber>
-          <ItemText>real_send</ItemText>
+          <ItemText>reportfertigation52</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
           <WinNumber>2</WinNumber>
-          <ItemText>\\Induction_Heater\../User/HandleTask.c\module_send_flg</ItemText>
+          <ItemText>fertigation51</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
           <WinNumber>2</WinNumber>
-          <ItemText>reportfertigation52</ItemText>
+          <ItemText>freq_I</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>RecDataBuffer4</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>
@@ -648,7 +663,7 @@
       <GroupNumber>4</GroupNumber>
       <FileNumber>18</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
