@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\Output\Induction Heater.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\Output\Induction Heater.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Tue Dec 04 16:21:44 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Dec 05 15:48:46 2018
 <BR><P>
 <H3>Maximum Stack Usage =        584 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -392,6 +392,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[191]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float_to_string
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RxReport5
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RxReport4
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SF_Flow_Measu
 </UL>
 
 <P><STRONG><a name="[53]"></a>__aeabi_fdiv</STRONG> (Thumb, 124 bytes, Stack size 8 bytes, fdiv.o(.text))
@@ -457,6 +458,7 @@ Global Symbols
 <P><STRONG><a name="[135]"></a>__aeabi_f2uiz</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, ffixui.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RxReport5
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RxReport4
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SF_Flow_Measu
 </UL>
 
 <P><STRONG><a name="[5b]"></a>__aeabi_d2uiz</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, dfixui.o(.text))
@@ -1732,10 +1734,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_Configuration
 </UL>
 
-<P><STRONG><a name="[104]"></a>SF_Flow_Measu</STRONG> (Thumb, 444 bytes, Stack size 32 bytes, handletask.o(i.SF_Flow_Measu))
+<P><STRONG><a name="[104]"></a>SF_Flow_Measu</STRONG> (Thumb, 502 bytes, Stack size 32 bytes, handletask.o(i.SF_Flow_Measu))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = SF_Flow_Measu &rArr; Start_timerEx &rArr; AddTimer &rArr; malloc
 </UL>
 <BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start_timerEx
+<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Period_Events_Handle
 </UL>
@@ -3091,7 +3095,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Period_Events_Handle
 </UL>
 
-<P><STRONG><a name="[117]"></a>RxReport5</STRONG> (Thumb, 788 bytes, Stack size 24 bytes, handletask.o(i.RxReport5))
+<P><STRONG><a name="[117]"></a>RxReport5</STRONG> (Thumb, 796 bytes, Stack size 24 bytes, handletask.o(i.RxReport5))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = RxReport5 &rArr; GetCRC16
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetCRC16

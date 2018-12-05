@@ -771,7 +771,7 @@ void SF_Flow_Trans(void);
 u8 SF_Qeury_index=0;      //查询下发后收到的回复确认
 u8 SF_Trans_flg=0;					//参数下发标志位，向两路控制器下发设定参数
 u16 SF_collector_temp = 0;
-u8 SF_wgcollector_data_buff[8] = {0};
+u8 SF_wgcollector_data_buff[16] = {0};
 u8 SF_TD_param_num = 0;
 #define SF_Para_Tran_time 500
 extern u8 SF_USART3SendTCB[128];
@@ -8038,6 +8038,13 @@ void SF_Flow_Measu()   //三路配肥流量监测
         SF_TD_param_num++;
         SF_TD_param_num++;
     }
+		SF_wgcollector_data_buff[8]=(u16)((fertigation52.prarm_float[3] * 100)) & 0x00FF;    //第一路施肥浓度放大100倍，低字节
+		SF_wgcollector_data_buff[9]=(u16)((fertigation52.prarm_float[3] * 100))>>8;         //第一路施肥浓度放大100倍，高字节
+		SF_wgcollector_data_buff[10]=(u16)((fertigation52.prarm_float[4] * 100)) & 0x00FF;  //第二路施肥浓度放大100倍，低字节
+		SF_wgcollector_data_buff[11]=(u16)((fertigation52.prarm_float[4] * 100))>>8;         //第二路施肥浓度放大100倍，高字节
+		SF_wgcollector_data_buff[12]=(u16)((fertigation52.prarm_float[5] * 100)) & 0x00FF;  //第二路施肥浓度放大100倍，低字节
+		SF_wgcollector_data_buff[13]=(u16)((fertigation52.prarm_float[5] * 100))>>8;        //第二路施肥浓度放大100倍，高字节
+		
   
     Start_timerEx(SF_Flow_Trans_EVT,100);
 
@@ -8048,14 +8055,14 @@ void SF_Flow_Trans()  //配肥三路直管瞬时流量下发，总管流量电磁流量计485,寄存器地
     {
     case 0:
         Start_timerEx(SF_Flow_Trans_EVT,100);
-        bytelen3 = WriteMultipleRegister(SF_SlaveID_0, 100, 4, SF_wgcollector_data_buff, ReportData3); //寄存器100用于存储三路流量数据
+        bytelen3 = WriteMultipleRegister(SF_SlaveID_0, 100, 8, SF_wgcollector_data_buff, ReportData3); //寄存器100用于存储三路流量数据
         memcpy(SF_USART3SendTCB, ReportData3, bytelen3);
         SF_WriteDataToDMA_BufferTX3(bytelen3);
         SF_Flow_Trans_Flg++;
 
         break;
     case 1:
-        bytelen3 = WriteMultipleRegister(SF_SlaveID_1, 100, 4, SF_wgcollector_data_buff, ReportData3);
+        bytelen3 = WriteMultipleRegister(SF_SlaveID_1, 100, 8, SF_wgcollector_data_buff, ReportData3);
         memcpy(SF_USART3SendTCB, ReportData3, bytelen3);
         SF_WriteDataToDMA_BufferTX3(bytelen3);
         SF_Flow_Trans_Flg = 0;
