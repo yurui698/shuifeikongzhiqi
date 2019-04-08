@@ -31,7 +31,8 @@ OUTPUT   : NONE
 */
 u8 SPI_WriteByte(u8 TxData)
 {
-    if(softspi) {
+    if(softspi)
+    {
         u8 i,ret=0;
         for(i=0; i<8; i++)
         {
@@ -78,8 +79,10 @@ void SI4463_WAIT_CTS(void)
         SPI1_NSS_HIGH;
         IWDG_ReloadCounter();
         max_delay--;
-    } while( cts != 0xFF&&max_delay!=0);//&&max_delay!=0
-    if(max_delay==0) {
+    }
+    while( cts != 0xFF&&max_delay!=0);  //&&max_delay!=0
+    if(max_delay==0)
+    {
         close_433MHZ=0;
     }
 }

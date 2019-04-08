@@ -9,8 +9,7 @@
 #ifndef _SI446X_DEFS_H_
 #define _SI446X_DEFS_H_
 
-typedef enum
-{
+typedef enum {
     /*BOOT COMMANDS-------------------------------------*/
     POWER_UP                = 0x02, // Power up
 
@@ -65,8 +64,7 @@ typedef enum
 
 
 //  priority for SI446x
-typedef enum
-{
+typedef enum {
     GLOBAL_XO_TUNE          = 0x0000,
     GLOBAL_CLK_CFG          = 0x0001,
     GLOBAL_LOW_BATT_THRESH  = 0x0001,

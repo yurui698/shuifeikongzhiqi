@@ -6,8 +6,7 @@
 数据在时钟高电平的时候从高往低跃变
 *****************************/
 
-void MAX44009_Transtart(void)
-{
+void MAX44009_Transtart(void) {
     LIGHT_DTA_W;
     LIGHT_DTA_H;
     LIGHT_SCK_H;
@@ -26,8 +25,7 @@ void MAX44009_Transtart(void)
 数据在时钟高电平的时候从低往高跃变
 ********************************/
 
-void MAX44009_Transtop(void)
-{
+void MAX44009_Transtop(void) {
     LIGHT_DTA_W;
     LIGHT_DTA_L;
     LIGHT_SCK_H;
@@ -43,15 +41,13 @@ void MAX44009_Transtop(void)
 发送字节并且判断是否收到ACK
 当收到ACK返回为0，否则返回为1
 ******************************/
-u8 MAX44009_Send(u8 val)
-{
+u8 MAX44009_Send(u8 val) {
     u8 i;
     u8 err=0;
 
     LIGHT_DTA_W;
 
-    for(i=0; i<8; i++)
-    {
+    for(i=0; i<8; i++) {
         if(val&0x80)
             LIGHT_DTA_H;
         else
@@ -71,12 +67,9 @@ u8 MAX44009_Send(u8 val)
     LIGHT_SCK_H;
     Delayus(TIMEOUT);
 
-    if(LIGHT_DTA)
-    {
+    if(LIGHT_DTA) {
         err=0;
-    }
-    else
-    {
+    } else {
         err=1;
     }
 
@@ -93,15 +86,13 @@ u8 MAX44009_Send(u8 val)
 当参数为1的时候发送一个ACK(低电平)
 ***************************/
 
-u8 MAX44009_Read(u8 ack)
-{
+u8 MAX44009_Read(u8 ack) {
     u8 i;
     u8 val=0;
 
     LIGHT_DTA_R;
 
-    for(i=0; i<8; i++)
-    {
+    for(i=0; i<8; i++) {
         val<<=1;
         LIGHT_SCK_H;
         Delayus(TIMEOUT);
@@ -126,8 +117,7 @@ u8 MAX44009_Read(u8 ack)
     return val;
 }
 
-void MAX44009_INIT(void)
-{
+void MAX44009_INIT(void) {
     MAX44009_Transtart();
     MAX44009_Send(MAX44009_WRITE);   //发送地址
     MAX44009_Send(CONFIGURATION);
@@ -135,8 +125,7 @@ void MAX44009_INIT(void)
     MAX44009_Transtop();
 }
 
-u16 get_light(void)
-{
+u16 get_light(void) {
     u16 value=0x0000;
 
     MAX44009_Transtart();
@@ -161,8 +150,7 @@ u16 get_light(void)
     return value;
 }
 
-u16 Get_Illuminance(void)
-{
+u16 Get_Illuminance(void) {
     u16 result = 0x0000;
     u16 temp = 0x0000;
 
@@ -175,12 +163,9 @@ u16 Get_Illuminance(void)
     exp =  (temp & 0xF000) >> 12;
     coef = ((temp & 0x0F00) >> 4) | (temp & 0x000F);
 
-    if(exp == 0x0F)	 //指数超量程情况，返回0xFFFF作为区分
-    {
+    if(exp == 0x0F) { //指数超量程情况，返回0xFFFF作为区分
         return 0xFFFF;
-    }
-    else
-    {
+    } else {
         res = pow(2,exp) * 0.045 * coef / 10;  //是实际值的1/10
         result = (u16)res;
         return result;
@@ -188,8 +173,7 @@ u16 Get_Illuminance(void)
 
 }
 
-u16 GET_PRESSUE0(void) //大气压力;通道0-光照度PC0
-{
+u16 GET_PRESSUE0(void) { //大气压力;通道0-光照度PC0
     u16 value;
     u16 data[5]= {0x00};
 
@@ -208,18 +192,14 @@ u16 GET_PRESSUE0(void) //大气压力;通道0-光照度PC0
     data[4]=MAX44009_Read(0);
     MAX44009_Transtop();
 
-    if((data[0]&0x60)==0x40)
-    {
+    if((data[0]&0x60)==0x40) {
         value=(data[1]<<8)|data[2];
-    }
-    else
-    {
+    } else {
         value=0xffff;
     }
     return value;
 }
-u16 PRESSUE_level2(void) //液位压力LWP5050GD;通道0-光照度PC0
-{
+u16 PRESSUE_level2(void) { //液位压力LWP5050GD;通道0-光照度PC0
     u16 value;
     u8 data[7]= {0x00};
 
@@ -252,8 +232,7 @@ u16 PRESSUE_level2(void) //液位压力LWP5050GD;通道0-光照度PC0
 }
 
 
-u16 GET_level0(void) //液位压力cps120;通道0-光照度PC0
-{
+u16 GET_level0(void) { //液位压力cps120;通道0-光照度PC0
     u16 value;
     u16 data[5]= {0x00};
 
@@ -271,12 +250,9 @@ u16 GET_level0(void) //液位压力cps120;通道0-光照度PC0
     data[3]=MAX44009_Read(0);
     MAX44009_Transtop();
 
-    if((data[0]&0xC0)==0x00)
-    {
+    if((data[0]&0xC0)==0x00) {
         value=(data[0]<<8)|data[1];
-    }
-    else
-    {
+    } else {
         value=0xffff;
     }
     return value;

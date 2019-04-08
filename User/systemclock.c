@@ -19,22 +19,19 @@ static void  SysHandleEvent(void);
 
 
 
-void SysClock(void)
-{
+void SysClock(void) {
     u32 sysclockcnt_current=0,updateTime=0;
 
     __set_PRIMASK(1);
     sysclockcnt_current=SysTick->VAL;
     sysclockcnt_current=sysclockcnt_current/72000;
 
-    if(sysclockcnt_current<sysclockcnt_old)
-    {
+    if(sysclockcnt_current<sysclockcnt_old) {
         updateTime=sysclockcnt_old-sysclockcnt_current;
         sysclockcnt+=updateTime;
     }
 
-    else if(sysclockcnt_current>sysclockcnt_old)
-    {
+    else if(sysclockcnt_current>sysclockcnt_old) {
         updateTime=(0x00FFFFFF-sysclockcnt_current*72000)/72000+sysclockcnt_old;
         sysclockcnt+=updateTime;
     }
@@ -46,8 +43,7 @@ void SysClock(void)
     __set_PRIMASK(1);
     sysclockcnt_old=sysclockcnt_current;
 
-    if(sysclockcnt>=86400000)
-    {
+    if(sysclockcnt>=86400000) {
         sysclockcnt-=86400000;
         sysclockday+=1;
     }
@@ -60,27 +56,23 @@ void SysClock(void)
 
 
 
-void GetSysTime(u32 *Day,u32 *mSec)
-{
+void GetSysTime(u32 *Day,u32 *mSec) {
     *Day=sysclockday;
     *mSec=sysclockcnt;
 }
 
 
 
-void TimerInit(void)
-{
+void TimerInit(void) {
     timerhead=NULL;
 }
 
 
-static TimerRec *FindTimer(u32 eventflag)
-{
+static TimerRec *FindTimer(u32 eventflag) {
     TimerRec *srchTimer;
     srchTimer=timerhead;
 
-    while(srchTimer)
-    {
+    while(srchTimer) {
         if(srchTimer->eventflag==eventflag)
             break;
 
@@ -92,23 +84,19 @@ static TimerRec *FindTimer(u32 eventflag)
 
 
 
-static TimerRec *AddTimer(u32 eventflag,u16 timeout)
-{
+static TimerRec *AddTimer(u32 eventflag,u16 timeout) {
     TimerRec *newTimer,*srchTimer;
     newTimer=FindTimer(eventflag);
 
-    if(newTimer)
-    {
+    if(newTimer) {
         newTimer->timeout=timeout;
         return (newTimer);
     }
 
-    else
-    {
+    else {
         newTimer=(TimerRec *) malloc(sizeof(TimerRec));
 
-        if(newTimer)
-        {
+        if(newTimer) {
             newTimer->eventflag=eventflag;
             newTimer->timeout=timeout;
             newTimer->reload_timeout=0;
@@ -117,8 +105,7 @@ static TimerRec *AddTimer(u32 eventflag,u16 timeout)
             if(timerhead==NULL)
                 timerhead=newTimer;
 
-            else
-            {
+            else {
                 srchTimer=timerhead;
 
                 while(srchTimer->next)
@@ -136,24 +123,21 @@ static TimerRec *AddTimer(u32 eventflag,u16 timeout)
 }
 
 //²É¼¯
-void  Delayus(u32 us)
-{
+void  Delayus(u32 us) {
     u32 i;
     i = us * 20;
     for(; i != 0; i--);
 
 }
 
-static void DeleteTimer(TimerRec *rmTimer)
-{
+static void DeleteTimer(TimerRec *rmTimer) {
     if(rmTimer)
         rmTimer->eventflag=0;
 }
 
 
 
-u8 Start_timerEx(u32 eventflag,u16 timeout)
-{
+u8 Start_timerEx(u32 eventflag,u16 timeout) {
     TimerRec *newTimer;
 
     __set_PRIMASK(1);
@@ -165,8 +149,7 @@ u8 Start_timerEx(u32 eventflag,u16 timeout)
 
 
 
-u8 Start_reload_timer(u32 eventflag,u16 reload_timeout)
-{
+u8 Start_reload_timer(u32 eventflag,u16 reload_timeout) {
     TimerRec *newTimer;
 
     __set_PRIMASK(1);
@@ -180,8 +163,7 @@ u8 Start_reload_timer(u32 eventflag,u16 reload_timeout)
 
 
 
-u8 Stop_timerEx(u32 eventflag)
-{
+u8 Stop_timerEx(u32 eventflag) {
     TimerRec *foundTimer;
 
     __set_PRIMASK(1);
@@ -195,8 +177,7 @@ u8 Stop_timerEx(u32 eventflag)
 
 
 
-u16 Get_timeoutEx(u32 eventflag)
-{
+u16 Get_timeoutEx(u32 eventflag) {
     u16 rtrn=0;
     TimerRec *tmr;
 
@@ -211,15 +192,13 @@ u16 Get_timeoutEx(u32 eventflag)
 
 
 
-u8 Timer_Num_Active(void)
-{
+u8 Timer_Num_Active(void) {
     u8 num_timers=0;
     TimerRec *srchTimer;
 
     __set_PRIMASK(1);
     srchTimer=timerhead;
-    while(srchTimer!=NULL)
-    {
+    while(srchTimer!=NULL) {
         num_timers++;
         srchTimer=srchTimer->next;
     }
@@ -230,35 +209,30 @@ u8 Timer_Num_Active(void)
 
 
 
-void Set_Event(u32 eventflag)
-{
+void Set_Event(u32 eventflag) {
     Events|=eventflag;
 }
 
 
 
-void Clear_Event(u32 eventflag)
-{
+void Clear_Event(u32 eventflag) {
     Events&=~eventflag;
 }
 
 
 
-static void TimerUpdate(u32 updateTime)
-{
+static void TimerUpdate(u32 updateTime) {
     TimerRec *srchTimer;
     TimerRec *prevTimer;
 
     __set_PRIMASK(1);
     //Look for open timer slot
-    if(timerhead!= NULL)
-    {
+    if(timerhead!= NULL) {
         //Add it to the end of the timer list
         srchTimer=timerhead;
         prevTimer=NULL;
         //Look for open timer slot
-        while( srchTimer)
-        {
+        while( srchTimer) {
             TimerRec *freeTimer=NULL;
 
             if(srchTimer->timeout<=updateTime)
@@ -267,8 +241,7 @@ static void TimerUpdate(u32 updateTime)
                 srchTimer->timeout=srchTimer->timeout-updateTime;
 
             // Check for reloading
-            if((srchTimer->timeout==0)&&(srchTimer->reload_timeout)&&(srchTimer->eventflag))
-            {
+            if((srchTimer->timeout==0)&&(srchTimer->reload_timeout)&&(srchTimer->eventflag)) {
                 // Notify the task of a timeout
                 Set_Event(srchTimer->eventflag);
                 // Reload the timer timeout value
@@ -276,8 +249,7 @@ static void TimerUpdate(u32 updateTime)
             }
 
             //When timeout or delete (event_flag == 0)
-            if (srchTimer->timeout==0||srchTimer->eventflag==0)
-            {
+            if (srchTimer->timeout==0||srchTimer->eventflag==0) {
                 //Take out of list
                 if (prevTimer==NULL)
                     timerhead=srchTimer->next;
@@ -291,15 +263,13 @@ static void TimerUpdate(u32 updateTime)
                 srchTimer=srchTimer->next;
             }
 
-            else
-            {
+            else {
                 // Get next
                 prevTimer=srchTimer;
                 srchTimer=srchTimer->next;
             }
 
-            if(freeTimer)
-            {
+            if(freeTimer) {
                 if(freeTimer->timeout==0)
                     Set_Event(freeTimer->eventflag);
                 free(freeTimer);
@@ -309,8 +279,7 @@ static void TimerUpdate(u32 updateTime)
     __set_PRIMASK(0);
 }
 
-static void SysHandleEvent(void)
-{
+static void SysHandleEvent(void) {
     if(Events)
         Period_Events_Handle(Events);
     Scan_Events_Handle();

@@ -17,8 +17,7 @@ INTPUT   : NONE
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_IOSET(void)
-{
+void SI4463_IOSET(void) {
 
 }
 /*
@@ -29,13 +28,10 @@ INTPUT   : NONE
 OUTPUT   : NONE
 =================================================================================
 */
-u8 SPI_WriteByte(u8 TxData)
-{
-    if(softspi)
-    {
+u8 SPI_WriteByte(u8 TxData) {
+    if(softspi) {
         u8 i,ret=0;
-        for(i=0; i<8; i++)
-        {
+        for(i=0; i<8; i++) {
             if(TxData&0x80)
                 SI_SDO_HIGH;
             else
@@ -49,9 +45,7 @@ u8 SPI_WriteByte(u8 TxData)
             SI_SCK_LOW;  //下降沿，锁存
         }
         return ret;
-    }
-    else
-    {
+    } else {
         while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
         SPI_I2S_SendData(SPI1, TxData);
         while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
@@ -67,22 +61,18 @@ INTPUT   : NONE
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_WAIT_CTS(void)
-{
+void SI4463_WAIT_CTS(void) {
     u8 cts;
     max_delay=1000;
-    do
-    {
+    do {
         SPI1_NSS_LOW;
         SPI_WriteByte( READ_CMD_BUFF );
         cts = SPI_WriteByte( NOP );
         SPI1_NSS_HIGH;
         IWDG_ReloadCounter();
         max_delay--;
-    }
-    while( cts != 0xFF&&max_delay!=0);  //&&max_delay!=0
-    if(max_delay==0)
-    {
+    } while( cts != 0xFF&&max_delay!=0); //&&max_delay!=0
+    if(max_delay==0) {
         close_433MHZ=0;
     }
 }
@@ -95,13 +85,11 @@ INTPUT   : buffer,  a buffer, stores the data responsed
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_READ_RESPONSE(u8 *buffer, u8 size )
-{
+void SI4463_READ_RESPONSE(u8 *buffer, u8 size ) {
     SI4463_WAIT_CTS( );
     SPI1_NSS_LOW;
     SPI_WriteByte( READ_CMD_BUFF );
-    while( size -- )
-    {
+    while( size -- ) {
         *buffer++ = SPI_WriteByte(NOP);
     }
     SPI1_NSS_HIGH;
@@ -116,27 +104,23 @@ INTPUT   : cmd, the buffer stores the command array
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_CMD(u8 *cmd, u8 cmdsize)
-{
+void SI4463_CMD(u8 *cmd, u8 cmdsize) {
     SI4463_WAIT_CTS( );
     SPI1_NSS_LOW;
-    while( cmdsize -- )
-    {
+    while( cmdsize -- ) {
         SPI_WriteByte( *cmd++ );
     }
     SPI1_NSS_HIGH;
 }
 
-void SI4463_SPI_Active(void)
-{
+void SI4463_SPI_Active(void) {
     u8 cmd[2];
     cmd[0] = CHANGE_STATE;
     cmd[1] = 0x02;;
     SI4463_CMD( cmd, 2 );
 }
 
-void SI4463_Rx_State(void)
-{
+void SI4463_Rx_State(void) {
     u8 cmd[2];
     cmd[0] = CHANGE_STATE;
     cmd[1] = 0x08;;
@@ -151,8 +135,7 @@ INTPUT   :
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_Init(void)
-{
+void SI4463_Init(void) {
     SI4463_RESET( );
     SI4463_CONFIG_INIT( );
     SI4463_INT_STATUS(First);
@@ -165,8 +148,7 @@ INTPUT   : NONE
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_RESET(void)
-{
+void SI4463_RESET(void) {
     SI4463_SDN_HIGH;
     Delayus(10);
     SI4463_SDN_LOW;
@@ -182,8 +164,7 @@ INTPUT   : GROUP_NUM, the group and number index
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_SET_PROPERTY_1( SI446X_PROPERTY GROUP_NUM, u8 proirity )
-{
+void SI4463_SET_PROPERTY_1( SI446X_PROPERTY GROUP_NUM, u8 proirity ) {
     u8 cmd[5];
 
     cmd[0] = SET_PROPERTY;
@@ -194,8 +175,7 @@ void SI4463_SET_PROPERTY_1( SI446X_PROPERTY GROUP_NUM, u8 proirity )
     SI4463_CMD( cmd, 5 );
 }
 
-void SI4463_GET_PROPERTY_1(u8 *buffer)
-{
+void SI4463_GET_PROPERTY_1(u8 *buffer) {
     u8 cmd[4];
     cmd[0] = GET_PROPERTY;
     cmd[1] = 0x12;
@@ -214,8 +194,7 @@ OUTPUT   : NONE
 =================================================================================
 */
 void SI4463_GPIO_CONFIG( u8 G0, u8 G1, u8 G2, u8 G3,
-                         u8 IRQ, u8 SDO, u8 GEN_CONFIG )
-{
+                         u8 IRQ, u8 SDO, u8 GEN_CONFIG ) {
     u8 cmd[10];
     cmd[0] = GPIO_PIN_CFG;
     cmd[1] = G0;
@@ -236,12 +215,10 @@ INTPUT   : NONE
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_CONFIG_INIT(void)
-{
+void SI4463_CONFIG_INIT(void) {
     u8 i;
     u16 j = 0;
-    while( ( i = config_table[j] ) != 0 )
-    {
+    while( ( i = config_table[j] ) != 0 ) {
         j += 1;
         SI4463_CMD( config_table + j, i );
         j += i;
@@ -271,8 +248,7 @@ INTPUT   : None
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_RX_FIFO_RESET( void )
-{
+void SI4463_RX_FIFO_RESET( void ) {
     u8 cmd[2];
 
     cmd[0] = FIFO_INFO;
@@ -287,8 +263,7 @@ INTPUT   : None
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_TX_FIFO_RESET( void )
-{
+void SI4463_TX_FIFO_RESET( void ) {
     u8 cmd[2];
 
     cmd[0] = FIFO_INFO;
@@ -303,16 +278,14 @@ INTPUT   : buffer, the buffer stores the part information
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_PART_INFO(u8 *buffer)
-{
+void SI4463_PART_INFO(u8 *buffer) {
     u8 cmd = PART_INFO;
 
     SI4463_CMD( &cmd, 1 );
     SI4463_READ_RESPONSE( buffer, 8 );
 }
 
-void SI4463_GET_INFO(u8 *buffer)
-{
+void SI4463_GET_INFO(u8 *buffer) {
     u8 cmd = REQUEST_DEVICE_STATE;
 
     SI4463_CMD( &cmd, 1 );
@@ -326,8 +299,7 @@ INTPUT   : buffer, the buffer stores the int status
 OUTPUT   : NONE
 =================================================================================
 */
-void SI4463_INT_STATUS( u8 *buffer )
-{
+void SI4463_INT_STATUS( u8 *buffer ) {
     u8 cmd[4];
     cmd[0] = GET_INT_STATUS;
     cmd[1] = 0;
@@ -337,8 +309,7 @@ void SI4463_INT_STATUS( u8 *buffer )
     SI4463_READ_RESPONSE( buffer, 9 );
 }
 
-void SI4463_SEND_PACKET( u8 *txbuffer, u8 size, u8 channel, u8 condition)
-{
+void SI4463_SEND_PACKET( u8 *txbuffer, u8 size, u8 channel, u8 condition) {
 
     u8 cmd[5];
     u8 tx_len = size;
@@ -351,8 +322,7 @@ void SI4463_SEND_PACKET( u8 *txbuffer, u8 size, u8 channel, u8 condition)
     tx_len++;
     SPI_WriteByte(size);
 #endif
-    while( size -- )    					//将有效数据写入FIFO
-    {
+    while( size -- ) {  					//将有效数据写入FIFO
         SPI_WriteByte( *txbuffer++ );
     }
     SPI1_NSS_HIGH;
@@ -372,16 +342,14 @@ void SI4463_SEND_PACKET( u8 *txbuffer, u8 size, u8 channel, u8 condition)
 
 //}
 
-void Delayms(u16 ms)
-{
+void Delayms(u16 ms) {
     u32 i;
     i = ms * 8000;
     for(; i != 0; i--);
 }
 
 void SI4463_START_RX( u8 channel, u8 condition, u16 rx_len,
-                      u8 n_state1, u8 n_state2, u8 n_state3 )
-{
+                      u8 n_state1, u8 n_state2, u8 n_state3 ) {
     u8 cmd[8];
     SI4463_RX_FIFO_RESET( );
     SI4463_TX_FIFO_RESET( );
@@ -396,8 +364,7 @@ void SI4463_START_RX( u8 channel, u8 condition, u16 rx_len,
     SI4463_CMD( cmd, 8 );
 }
 
-u8 SI4463_READ_PACKET( u8 *buffer )
-{
+u8 SI4463_READ_PACKET( u8 *buffer ) {
     u8 length, i;
     SI4463_SPI_Active();
     SI4463_WAIT_CTS( );
@@ -410,8 +377,7 @@ u8 SI4463_READ_PACKET( u8 *buffer )
 #endif
     i = length;
 
-    while( length -- )
-    {
+    while( length -- ) {
         *buffer++ = SPI_WriteByte(NOP);
     }
     SPI1_NSS_HIGH;

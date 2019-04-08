@@ -19,8 +19,8 @@ typedef enum
     PART_INFO               = 0x01, //Reports basic information about the device.
     FUNC_INFO               = 0x10, //Returns the Function revision information of the device.
     GET_INT_STATUS          = 0x20, //Returns the interrupt status of ALL the possible interrupt events
-                                    //(both STATUS and PENDING). Optionally, it may be used to
-                                    //clear latched (PENDING) interrupt events.
+    //(both STATUS and PENDING). Optionally, it may be used to
+    //clear latched (PENDING) interrupt events.
     SET_PROPERTY            = 0x11, //Sets the value of a property.
     GET_PROPERTY            = 0x12, //Retrieve a property's value.
     FIFO_INFO               = 0x15, //Provides access to transmit and receive FIFO counts and reset.
@@ -35,39 +35,39 @@ typedef enum
 
     /*IR_CAL_COMMANDS----------------------------------*/
     IRCAL                   = 0x17, //Image rejection calibration.
-	IRCAL_MANUAL			= 0x1A, //Image rejection calibration.
+    IRCAL_MANUAL			= 0x1A, //Image rejection calibration.
     /*TX_COMMANDS--------------------------------------*/
     START_TX                = 0x31, //Switches to TX state and starts packet transmission.
     WRITE_TX_FIFO           = 0x66, //Writes the TX FIFO.
 
     /*RX_COMMANDS--------------------------------------*/
     GET_MODEM_STATUS        = 0x22, //Returns the interrupt status of the Modem Interrupt Group
-                                    //(both STATUS and PENDING). Optionally, it may be used
-                                    //to clear latched (PENDING) interrupt events.
+    //(both STATUS and PENDING). Optionally, it may be used
+    //to clear latched (PENDING) interrupt events.
     PACKET_INFO             = 0x16, //Returns information about the last packet received and
-                                    //optionally overrides field length.
+    //optionally overrides field length.
     START_RX                = 0x32, //Switches to RX state. Command arguments are retained though
-                                    //sleep state, so these only need to be written when they change.
+    //sleep state, so these only need to be written when they change.
     RX_HOP                  = 0x36, //Hop to a new frequency while in RX.
     READ_RX_FIFO            = 0x77, //READ_RX_FIFO
 
     /*ADVANCED_COMMANDS-------------------------------*/
     GET_PH_STATUS           = 0x21, //Returns the interrupt status of the Packet Handler Interrupt
-                                    //Group (both STATUS and PENDING). Optionally, it may be used
-                                    //to clear latched (PENDING) interrupt events.
+    //Group (both STATUS and PENDING). Optionally, it may be used
+    //to clear latched (PENDING) interrupt events.
     GET_CHIP_STATUS         = 0x23, //Returns the interrupt status of the Chip Interrupt Group
-                                    //(both STATUS and PENDING). Optionally, it may be used to
-                                    //clear latched (PENDING) interrupt events.
+    //(both STATUS and PENDING). Optionally, it may be used to
+    //clear latched (PENDING) interrupt events.
 
     GET_ADC_READING         = 0x14  //Performs and retrieve the results of possible ADC conversions.
 
-}SI446X_CMD_X;
+} SI446X_CMD_X;
 
 
 //  priority for SI446x
 typedef enum
 {
-    GLOBAL_XO_TUNE          = 0x0000,  
+    GLOBAL_XO_TUNE          = 0x0000,
     GLOBAL_CLK_CFG          = 0x0001,
     GLOBAL_LOW_BATT_THRESH  = 0x0001,
     GLOBAL_CONFIG           = 0x0003,
@@ -373,8 +373,8 @@ typedef enum
     RX_HOP_TABLE_ENTRY_61   = 0x503F,
     RX_HOP_TABLE_ENTRY_62   = 0x5040,
     RX_HOP_TABLE_ENTRY_63   = 0x5041
-	
 
-}SI446X_PROPERTY;
 
-#endif 
+} SI446X_PROPERTY;
+
+#endif

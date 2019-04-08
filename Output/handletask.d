@@ -40,6 +40,7 @@
 ..\output\handletask.o: ..\User\stm32f10x_it.h
 ..\output\handletask.o: ..\User\SI7021.h
 ..\output\handletask.o: ..\User\junglesys.h
+..\output\handletask.o: f:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\output\handletask.o: ..\MQTT\MQTTPacket.h
 ..\output\handletask.o: ..\MQTT\MQTTConnect.h
 ..\output\handletask.o: ..\MQTT\StackTrace.h

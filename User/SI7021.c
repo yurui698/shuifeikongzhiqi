@@ -10,8 +10,7 @@
 
 #define CPS_DTA       GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)//PA0 二氧化碳
 //u8 test_data[7];
-void SI7021_I2C_Init(void)
-{
+void SI7021_I2C_Init(void) {
     DATA_OUTPUT; //PA1通用推挽输出，最大速度50MHz
     SCK_H;
     Delayus(WAIT_TIME);
@@ -21,8 +20,7 @@ void SI7021_I2C_Init(void)
 }
 
 
-void SI7021_TransStart(void) //测量空气温湿度
-{
+void SI7021_TransStart(void) { //测量空气温湿度
     DATA_OUTPUT;//PA1通用推挽输出，最大速度50MHz
     DATA_H;    //PA1=1 空气温湿度
     Delayus(WAIT_TIME);
@@ -35,8 +33,7 @@ void SI7021_TransStart(void) //测量空气温湿度
     DATA_INPUT;//安全使用
 }
 
-void SI7021_TransStop(void)
-{
+void SI7021_TransStop(void) {
     DATA_OUTPUT;//PA1通用推挽输出，最大速度50MHz
     DATA_L;    //PA1=0
     Delayus(WAIT_TIME);
@@ -50,13 +47,11 @@ void SI7021_TransStop(void)
 }
 
 
-u8 SI7021_WriteByte(u8 data)
-{
+u8 SI7021_WriteByte(u8 data) {
     u8 i;
     u8 ack=0;
     DATA_OUTPUT;//PA1通用推挽输出，最大速度50MHz
-    for(i=0; i<8; i++)
-    {
+    for(i=0; i<8; i++) {
         if(data&0x80)
             DATA_H;
         else
@@ -84,13 +79,11 @@ u8 SI7021_WriteByte(u8 data)
 }
 
 
-u8  SI7021_ReadByte(u8 ack)
-{
+u8  SI7021_ReadByte(u8 ack) {
     u8 i;
     u8 val=0;
     DATA_INPUT;
-    for(i=0; i<8; i++)
-    {
+    for(i=0; i<8; i++) {
         val<<=1;
         SCK_H;
         Delayus(WAIT_TIME);
@@ -117,8 +110,7 @@ u8  SI7021_ReadByte(u8 ack)
 
 
 
-u16 SI7021_TempMeasurement(void)
-{
+u16 SI7021_TempMeasurement(void) {
     u16 value;
     SI7021_TransStart();
     SI7021_WriteByte(0x80);
@@ -134,8 +126,7 @@ u16 SI7021_TempMeasurement(void)
     return value;
 
 }
-u16 SI7021_HumiMeasurement(void)
-{
+u16 SI7021_HumiMeasurement(void) {
     u16 value,i;
 
     SI7021_TransStart();
@@ -145,8 +136,7 @@ u16 SI7021_HumiMeasurement(void)
 
     SI7021_TransStart();
     SI7021_WriteByte(0x81);
-    for(i=1200; i>0; i--)
-    {
+    for(i=1200; i>0; i--) {
         Delayus(2*WAIT_TIME);
     }
 
@@ -157,8 +147,7 @@ u16 SI7021_HumiMeasurement(void)
     return value;
 }
 
-u16 GET_PRESSUE1(void) //大气压力;通道1空气温湿度PA1
-{
+u16 GET_PRESSUE1(void) { //大气压力;通道1空气温湿度PA1
     u16 value;
     u16 data[5]= {0x00};
 
@@ -177,19 +166,15 @@ u16 GET_PRESSUE1(void) //大气压力;通道1空气温湿度PA1
     data[4]=SI7021_ReadByte(0);
     SI7021_TransStop();
 
-    if((data[0]&0x60)==0x40)
-    {
+    if((data[0]&0x60)==0x40) {
         value=(data[1]<<8)|data[2];
-    }
-    else
-    {
+    } else {
         value=0xffff;
     }
     return value;
 }
 
-u16 GET_level1(void) //液位压力cps120;通道1-通道1空气温湿度PA1
-{
+u16 GET_level1(void) { //液位压力cps120;通道1-通道1空气温湿度PA1
     u16 value;
     u16 data[5]= {0x00};
 
@@ -207,20 +192,16 @@ u16 GET_level1(void) //液位压力cps120;通道1-通道1空气温湿度PA1
     data[3]=SI7021_ReadByte(0);
     SI7021_TransStop();
 
-    if((data[0]&0xC0)==0x00)
-    {
+    if((data[0]&0xC0)==0x00) {
         value=(data[0]<<8)|data[1];
         level1_temperature=((data[2]<<8)|data[3])>>2;
-    }
-    else
-    {
+    } else {
         value=0xffff;
     }
     return value;
 }
 
-u16 PRESSUE_level1(void) //液位压力LWP5050GD;通道1-通道1空气温湿度PA1
-{
+u16 PRESSUE_level1(void) { //液位压力LWP5050GD;通道1-通道1空气温湿度PA1
     u16 value;
     u8 data[7]= {0x00};
 
@@ -253,8 +234,7 @@ u16 PRESSUE_level1(void) //液位压力LWP5050GD;通道1-通道1空气温湿度PA1
 }
 
 
-u16 Get_Carbon(void)
-{
+u16 Get_Carbon(void) {
     u16 value;
     u16 data[7];
 
@@ -282,15 +262,13 @@ u16 Get_Carbon(void)
 
 }
 
-u8 CPS131_Read(u8 ack)
-{
+u8 CPS131_Read(u8 ack) {
     u8 i;
     u8 val=0;
 
     CPS_DTA_R;
 
-    for(i=0; i<8; i++)
-    {
+    for(i=0; i<8; i++) {
         val<<=1;
         CPS_SCK_H;
         Delayus(TIMEOUT_CPS);
@@ -316,8 +294,7 @@ u8 CPS131_Read(u8 ack)
 }
 
 
-void CPS131_Transtop(void)
-{
+void CPS131_Transtop(void) {
     CPS_DTA_W;
     CPS_DTA_L;
     CPS_SCK_H;
@@ -329,15 +306,13 @@ void CPS131_Transtop(void)
     CPS_DTA_R;//安全使用
 }
 
-u8 CPS131_Send(u8 val)
-{
+u8 CPS131_Send(u8 val) {
     u8 i;
     u8 err=0;
 
     CPS_DTA_W;
 
-    for(i=0; i<8; i++)
-    {
+    for(i=0; i<8; i++) {
         if(val&0x80)
             CPS_DTA_H;
         else
@@ -367,8 +342,7 @@ u8 CPS131_Send(u8 val)
     return err;
 }
 
-void CPS131_Transtart(void)
-{
+void CPS131_Transtart(void) {
     CPS_DTA_W; //PA0
     CPS_DTA_H;
     CPS_SCK_H;
@@ -380,8 +354,7 @@ void CPS131_Transtart(void)
     CPS_DTA_R;//安全使用
 }
 
-u16 GET_PRESSUE4(void) //大气压力
-{
+u16 GET_PRESSUE4(void) { //大气压力
     u16 value;
     u16 data[5]= {0x00};
 
@@ -400,19 +373,15 @@ u16 GET_PRESSUE4(void) //大气压力
     data[4]=CPS131_Read(0);
     CPS131_Transtop();
 
-    if((data[0]&0x60)==0x40)
-    {
+    if((data[0]&0x60)==0x40) {
         value=(data[1]<<8)|data[2];
-    }
-    else
-    {
+    } else {
         value=0xffff;
     }
     return value;
 }
 
-u16 GET_level4(void) //液位压力
-{
+u16 GET_level4(void) { //液位压力
     u16 value;
     u16 data[5]= {0x00};
 
@@ -430,12 +399,9 @@ u16 GET_level4(void) //液位压力
     data[3]=CPS131_Read(0);
     CPS131_Transtop();
 
-    if((data[0]&0xC0)==0x00)
-    {
+    if((data[0]&0xC0)==0x00) {
         value=(data[0]<<8)|data[1];
-    }
-    else
-    {
+    } else {
         value=0xffff;
     }
     return value;

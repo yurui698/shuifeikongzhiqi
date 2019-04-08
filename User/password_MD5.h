@@ -1,8 +1,7 @@
 #ifndef MD5_H
 #define MD5_H
 
-typedef struct
-{
+typedef struct {
     unsigned int count[2];
     unsigned int state[4];
     unsigned char buffer[64];

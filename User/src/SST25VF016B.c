@@ -366,7 +366,7 @@ void hold(void)
 //  byte = Read_Status_Register();	/* read the status register */
 //  if (byte != 0x02)		/* verify that WEL bit is set */
 //  {
-//    while(1);
+  //    while(1);
 //    /* add source code or statements for this file */
 //    /* to compile   			       */
 //    /* i.e. option: insert a display to view error on LED? */

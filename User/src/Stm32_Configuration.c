@@ -469,6 +469,20 @@ void UART5_Configuration(void)
         USART_InitStructure.USART_StopBits     =  USART_StopBits_1;				    // 在帧结尾传输1个停止位
         USART_InitStructure.USART_Parity       =  USART_Parity_No ;				    // 奇偶失能；USART_Parity_No；流量计为偶校验
     }
+		  if(factory_gateway_set[27]== 35)         //中航LED
+    {
+        USART_InitStructure.USART_BaudRate     =  38400;						        // 中航LED 串口波特率38400
+        USART_InitStructure.USART_WordLength   =  USART_WordLength_8b;			    // 8位数据；有校验位为9位
+        USART_InitStructure.USART_StopBits     =  USART_StopBits_1;				    // 在帧结尾传输1个停止位
+        USART_InitStructure.USART_Parity       =  USART_Parity_No ;				    // 奇偶失能；USART_Parity_No；流量计为偶校验
+    }
+		 if(factory_gateway_set[27]== 36)         //中航LED
+    {
+        USART_InitStructure.USART_BaudRate     =  38400;						        // 中航LED 串口波特率38400
+        USART_InitStructure.USART_WordLength   =  USART_WordLength_8b;			    // 8位数据；有校验位为9位
+        USART_InitStructure.USART_StopBits     =  USART_StopBits_1;				    // 在帧结尾传输1个停止位
+        USART_InitStructure.USART_Parity       =  USART_Parity_No ;				    // 奇偶失能；USART_Parity_No；流量计为偶校验
+    }
 
     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;	// 硬件流控制失能
 
@@ -520,7 +534,7 @@ void SPI1_Configuration(void)
         SPI_Cmd(SPI1, DISABLE);
         GPIO_InitStructure.GPIO_Pin    =   GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
         GPIO_InitStructure.GPIO_Mode   =   GPIO_Mode_AF_PP;
-        GPIO_InitStructure.GPIO_Speed  =   GPIO_Speed_50MHz;
+          GPIO_InitStructure.GPIO_Speed  =   GPIO_Speed_50MHz;
         GPIO_Init(GPIOA, &GPIO_InitStructure);
 
         SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
